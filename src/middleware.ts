@@ -60,14 +60,14 @@ const afterAuth = (
 
 export default clerkMiddleware((auth, req) => {
     const url = req.nextUrl;
+    if (url.pathname === "/") {
+        return NextResponse.rewrite(new URL("/site", req.url));
+    }
 
     if (!isPublicRoute(req)) {
         auth().protect();
     }
 
-    if (url.pathname === "/") {
-        return NextResponse.rewrite(new URL("/site", req.url));
-    }
     afterAuth(auth, req);
 });
 
